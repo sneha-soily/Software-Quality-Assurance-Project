@@ -1,0 +1,365 @@
+1*** POM XML
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>sqt</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+</project>
+
+*********************************************************
+
+2*** LOGIN PAGES
+
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+public class LoginPage {
+    WebDriver driver;
+    public LoginPage(WebDriver driver){
+
+        this.driver = driver;
+    }
+    By userName = By.xpath("//input[@id='username']");
+    By password = By.xpath("//input[@id='password']");
+    By submitButton = By.xpath("//input[@name='submit']");
+    By logoutButton = By.xpath("//a[normalize-space()='| Log-out']");
+
+    public void login(String userN,String pass){
+        driver.findElement(userName).sendKeys(userN);
+        driver.findElement(password).sendKeys(pass);
+        driver.findElement(submitButton).click();
+    }
+    public void verifyLoginPage(){
+        String expectedTitle = "Login";
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle,expectedTitle);
+    }
+    public void verifyLogin(){
+        String expectedTitle = "Restaurent Management System";
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle,expectedTitle);
+    }
+    public void logout(){
+        driver.findElement(logoutButton).click();
+    }
+
+}
+
+********************************************
+ 3**** HOME PAGE
+
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class HomePage {
+    WebDriver driver;
+    public HomePage(WebDriver driver){
+        this.driver = driver;
+    }
+    By loginButton = By.xpath("//a[normalize-space()='Login']");
+    By registrationButton = By.xpath("//a[normalize-space()='Registration']");
+    public void clickLogIn(){
+        driver.findElement(loginButton).click();
+    }
+    public void clickRegistration(){
+        driver.findElement(registrationButton).click();
+    }
+
+}
+
+********************************************************
+
+4****** REGISTRATION PAGE
+
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+public class   RegistrationPage extends LoginPage{
+    WebDriver driver;
+
+    public RegistrationPage(WebDriver driver) {
+        super(driver);
+        this.driver = driver;
+    }
+
+    By nameField = By.xpath("//label[normalize-space()='Name:']");
+    By nameInput = By.xpath("//input[@id='name']");
+
+
+    By userName = By.xpath("//input[@id='username']");
+
+    By password = By.xpath("//input[@id='password']");
+
+    By confirmPass = By.xpath("//input[@id='cpassword']");
+
+    By genderOther = By.xpath("//input[@id='other']");
+
+    By email = By.xpath("//input[@id='email']");
+    By phone = By.xpath("//input[@id='phone']");
+    By address = By.xpath("//input[@id='address']");
+    By submitButton = By.xpath("//input[@name='submit']");
+    By loginField = By.xpath("//b[normalize-space()='LOGIN']");
+    By rememberMe = By.xpath("//a[normalize-space()='Forgot Password'])[1]");
+
+
+
+
+    public void verifyRegPage() {
+        driver.findElement(nameField).isDisplayed();
+    }
+
+    public void registration() {
+        driver.findElement(nameInput).sendKeys("Mr.Test");
+        driver.findElement(userName).sendKeys("test6");
+        driver.findElement(password).sendKeys("test6");
+        driver.findElement(confirmPass).sendKeys("test");
+        driver.findElement(genderOther).click();
+        driver.findElement(email).sendKeys("test@gmail.com");
+        driver.findElement(phone).sendKeys("01712345678");
+        driver.findElement(address).sendKeys("test");
+        driver.findElement(submitButton).click();
+    }
+    public void verifyReg() {
+        driver.findElement(rememberMe).isDisplayed();
+    }
+
+
+
+}
+
+***************************************************
+
+5**** MANAGEMENT MANAGER PAGE
+
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+
+public class ManagerManagementPage extends LoginPage {
+
+    WebDriver driver;
+    public ManagerManagementPage(WebDriver driver){
+        super(driver);
+        this.driver = driver;
+    }
+
+    By managerManagement = By.xpath("//a[normalize-space()='Manager Management']");
+    By addManager = By.xpath("//a[normalize-space()='Add Manager']");
+
+    By name = By.xpath("//input[@id='name']");
+
+    By id = By.xpath("//input[@id='id']");
+
+    By salary = By.xpath("//input[@id='salary']");
+
+    By joiningDate = By.xpath("//input[@id='joindate']");
+
+    By phoneNumber = By.xpath("    //input[@id='phone']");
+
+    By email = By.xpath("//input[@id='email']");
+
+    By address = By.xpath(" //input[@id='address']");
+
+    public void addAManager() throws InterruptedException {
+        driver.findElement(managerManagement).click();
+        driver.findElement(addManager).click();
+        Thread.sleep(1000);
+        driver.findElement(name).sendKeys("man");
+        Thread.sleep(1000);
+        driver.findElement(id).sendKeys("1112");
+        driver.findElement(salary).sendKeys("100000");
+        Thread.sleep(1000);
+        driver.findElement(joiningDate).sendKeys("02112023");
+        Thread.sleep(1000);
+        driver.findElement(phoneNumber).sendKeys("01245675543");
+        Thread.sleep(1000);
+        driver.findElement(email).sendKeys("testa@gmail.com");
+        Thread.sleep(1000);
+        driver.findElement(address).sendKeys("Dhaka");
+        JavascriptExecutor js= (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        Thread.sleep(1000);
+        driver.findElement(submitButton).click();
+    }
+
+}
+
+********************************************************
+
+6**** BUY STOCK PAGE
+
+package pages;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+
+public class BuyStockPage extends LoginPage {
+
+    WebDriver driver;
+    public BuyStockPage(WebDriver driver){
+        super(driver);
+        this.driver = driver;
+    }
+
+    By stockInventoryStock  = By.xpath("//a[normalize-space()='Stock Inventory Management']");
+    By addStock = By.xpath("//a[normalize-space()='Add Stock']");
+
+    By name = By.xpath("//input[@id='name']");
+
+    By id = By.xpath("//input[@id='id']");
+
+    By price = By.xpath("//input[@id='price']");
+
+    By quality = By.xpath("//input[@id='quantity']");
+
+    By description = By.xpath(" //input[@id='description']");
+
+    public void addStock() throws InterruptedException {
+        driver.findElement(stockInventoryStock).click();
+        driver.findElement(addStock).click();
+        Thread.sleep(1000);
+        driver.findElement(name).sendKeys("man");
+        Thread.sleep(1000);
+        driver.findElement(id).sendKeys("1112");
+        driver.findElement(price).sendKeys("1000");
+        Thread.sleep(1000);
+        driver.findElement(quality).sendKeys("02");
+        Thread.sleep(1000);
+        driver.findElement(description).sendKeys("Chessy Burger");
+        Thread.sleep(1000);
+        JavascriptExecutor js= (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        Thread.sleep(1000);
+        driver.findElement(submitButton).click();
+    }
+}
+
+**********************************************************
+
+****7***** RMS SETUP
+
+package demoTest;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import pages.*;
+
+public class rmsSetUp {
+    WebDriver driver = new ChromeDriver();
+
+    @BeforeTest
+    public void setup() {
+        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/test/resources/chromedriver.exe");
+        driver.manage().window().maximize();
+        driver.get("http://localhost/RMS/");
+    }
+
+    @Test (priority = 0)
+    public void registration() throws InterruptedException {
+        HomePage home = new HomePage(driver);
+        RegistrationPage reg = new RegistrationPage(driver);
+        //LoginPage login = new LoginPage(driver);
+        //LoginPage login = new LoginPage(driver);
+        home.clickRegistration();
+        Thread.sleep(1000);
+        reg.verifyRegPage();
+        Thread.sleep(1000);
+        reg.registration();
+        Thread.sleep(1000);
+        //reg.verifyReg();
+        reg.login("test6","test6");
+        reg.logout();
+        Thread.sleep(1000);
+
+    }
+    @Test (priority = 1)
+    public void login() throws InterruptedException {
+        HomePage home = new HomePage(driver);
+        LoginPage login = new LoginPage(driver);
+        home.clickLogIn();
+        Thread.sleep(1000);
+        login.verifyLoginPage();
+        login.login("malik","4444");
+        Thread.sleep(1000);
+        login.verifyLogin();
+        login.logout();
+    }
+    @Test (priority = 2)
+    public void addManager() throws InterruptedException {
+        ManagerManagementPage mng = new ManagerManagementPage(driver);
+        HomePage hm = new HomePage(driver);
+        hm.clickLogIn();
+        mng.login("malik","4444");
+        mng.addAManager();
+        Thread.sleep(1000);
+
+    }
+
+    @Test (priority = 3)
+    public void addStock() throws InterruptedException {
+        BuyStockPage mng = new BuyStockPage(driver);
+        HomePage hn = new HomePage(driver);
+        hn.clickLogIn();
+        mng.login("malik","4444");
+        mng.addStock();
+        Thread.sleep(5000);
+
+    }
+
+    @AfterTest
+    public void exit(){
+        driver.close();
+        // driver.quit();
+
+    }
+
+}
+
+**********************************************************
